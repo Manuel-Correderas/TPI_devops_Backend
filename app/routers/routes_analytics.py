@@ -39,12 +39,24 @@ def date_range(months: int = 3):
 def month_expr(db: Session, dt_col):
     """
     Expresión SQL para agrupar por mes (YYYY-MM),
-    compatible con sqlite y mysql/mariadb.
+    compatible con sqlite, mysql/mariadb y postgresql.
     """
     dialect = db.bind.dialect.name
+
     if dialect == "sqlite":
+        # ej: 2025-11
         return func.strftime("%Y-%m", dt_col)
-    return func.date_format(dt_col, "%Y-%m")
+
+    if dialect in ("mysql", "mariadb"):
+        # MySQL / MariaDB
+        return func.date_format(dt_col, "%Y-%m")
+
+    if dialect in ("postgresql", "postgres"):
+        # PostgreSQL (Render)
+        return func.to_char(dt_col, "YYYY-MM")
+
+    # Fallback genérico: asumimos sintaxis estilo Postgres
+    return func.to_char(dt_col, "YYYY-MM")
 
 
 def seller_filter(db: Session, current_user: User):
@@ -270,7 +282,7 @@ def sales_daily(
         .filter(Order.created_at <= end_dt)
     )
 
-    # ✅ FIX: antes tenías "seller_id or True"
+    # si pasan seller_id, aplicamos filtro vendedor directo
     if seller_id:
         q = q.filter(sf)
     else:
