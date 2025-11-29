@@ -52,7 +52,7 @@ def login(payload: LoginPayload, db: Session = Depends(get_db)):
             "id": user.id,
             "email": user.email,
             "roles": [ur.role.code for ur in user.roles],
-            "premium": int(user.premium or 0),
+            "premium": bool(user.premium or False),
             "dni_bloqueado": int(user.dni_bloqueado or 0)
         }
     }

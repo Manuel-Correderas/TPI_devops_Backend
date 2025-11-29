@@ -121,7 +121,7 @@ def create_user_full(db: Session, p: UserCreate) -> User:
         acepta_terminos=p.acepta_terminos,
 
         # CAMPOS NUEVOS
-        premium=p.premium,
+        premium=bool(getattr(p, "premium", False)),
         estado="ACTIVO",
         dni_bloqueado=False,
         reset_code_hash=None,
@@ -167,7 +167,7 @@ def update_user_full(db: Session, user_id: str, p: UserCreate) -> User:
     u.acepta_terminos = p.acepta_terminos
 
     # premium
-    u.premium = p.premium
+    premium=bool(getattr(p, "premium", False)),
 
     if p.password:
         u.password_hash = hash_password(p.password)

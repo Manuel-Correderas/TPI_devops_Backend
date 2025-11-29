@@ -41,7 +41,7 @@ def crear_usuario_de_prueba():
             password_hash=hash_password("Test123!"),
             acepta_terminos=True,
             # campos con default en el modelo
-            premium=0,
+            premium=False,
             dni_bloqueado=False,
         )
         db.add(u)
@@ -65,7 +65,7 @@ def test_login_exitoso():
             "id": "...",
             "email": "...",
             "roles": [...],
-            "premium": 0,
+            "premium": False,
             "dni_bloqueado": 0
         }
     }
@@ -103,7 +103,7 @@ def test_login_exitoso():
 
     # 7) premium y dni_bloqueado esperables
     assert "premium" in user
-    assert isinstance(user["premium"], int)
+    assert isinstance(user["premium"], bool)
     assert "dni_bloqueado" in user
     # en SQLite a veces Boolean → int, por las dudas aceptamos ambos
     assert isinstance(user["dni_bloqueado"], (bool, int))

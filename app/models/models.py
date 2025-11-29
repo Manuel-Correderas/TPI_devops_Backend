@@ -39,7 +39,7 @@ class User(Base):
     kyc_docs = relationship("KYCDocument", back_populates="user", cascade="all,delete-orphan")
     roles = relationship("UserRole", back_populates="user", cascade="all,delete-orphan")
 
-    premium: Mapped[int] = mapped_column(Integer, default=0)
+    premium: Mapped[bool] = mapped_column(Boolean, default=False)
 
     # recuperación por código
     reset_code_hash: Mapped[str | None] = mapped_column(String(255), nullable=True)

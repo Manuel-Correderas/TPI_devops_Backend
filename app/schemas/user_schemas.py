@@ -43,7 +43,7 @@ class UserCreate(BaseModel):
     banking: Optional[BankingIn] = None
     wallets: Optional[List[CryptoWalletIn]] = None
     roles: List[RoleCode]
-    premium: int = 0
+    premium: bool = False 
 
 
 class UserOut(BaseModel):
@@ -54,7 +54,7 @@ class UserOut(BaseModel):
     email: EmailStr
     roles: List[str]
     creado_en: datetime
-    premium: int = 0
+    premium: bool = False 
 
     class Config:
         from_attributes = True

@@ -28,6 +28,11 @@ from backend.app.deps import get_db
 # ============================
 # FIXTURES DE BASE DE DATOS
 # ============================
+@pytest.fixture(autouse=True)
+def reset_db():
+    Base.metadata.drop_all(bind=engine)
+    Base.metadata.create_all(bind=engine)
+    yield
 
 @pytest.fixture(scope="session", autouse=True)
 def setup_database():

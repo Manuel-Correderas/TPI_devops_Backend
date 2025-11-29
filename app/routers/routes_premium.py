@@ -28,7 +28,7 @@ def confirm_premium_payment(
         raise HTTPException(400, "Monto inválido. Debe ser 20 USDT")
 
     # Marcar el usuario como premium
-    user.premium = 1
+    user.premium = True
     db.add(user)
     db.commit()
 
